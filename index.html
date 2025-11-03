@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Chatbot n8n</title>
+  <style>
+    body{font-family:'Segoe UI',sans-serif;margin:0;background:#f3f4f6;}
+    #chatbox{max-width:420px;margin:40px auto;background:#fff;border-radius:10px;box-shadow:0 3px 15px rgba(0,0,0,0.2);overflow:hidden;}
+    #chatlog{height:380px;overflow-y:auto;padding:12px;}
+    .msg{margin:6px 0;display:flex;}
+    .user{justify-content:flex-end;}
+    .bot{justify-content:flex-start;}
+    .bubble{padding:8px 12px;border-radius:10px;max-width:70%;word-wrap:break-word;}
+    .user .bubble{background:#0078ff;color:#fff;}
+    .bot .bubble{background:#e2e8f0;color:#000;}
+    #chatinput{display:flex;border-top:1px solid #ddd;}
+    input{flex:1;padding:10px;border:none;outline:none;}
+    button{background:#0078ff;color:#fff;border:none;padding:10px 16px;cursor:pointer;}
+    button:hover{background:#005fcc;}
+  </style>
+</head>
+<body>
+  <div id="chatbox">
+    <div id="chatlog"></div>
+    <div id="chatinput">
+      <input id="msg" placeholder="Nhập tin nhắn...">
+      <button id="send">Gửi</button>
+    </div>
+  </div>
+
+  <script>
+    const N8N_URL = "https://your-n8n-domain.com/webhook/chatbot";
+    const TOKEN = "CHANGE_ME_TOKEN";
+
+    const log = document.getElementById("chatlog");
+    const msg = document.getElementById("msg");
+    const send = document.getElementById("send");
+
+    function add(role,text){
+      const r=document.createElement('div');r.className='msg '+role;
+      const b=document.createElement('div');b.className='bubble';b.textContent=text;
+      r.appendChild(b);log.appendChild(r);log.scrollTop=log.scrollHeight;
+    }
+
+    async function sendMsg(){
+      const text=msg.value.trim(); if(!text) return;
+      add('user',text); msg.value=''; send.disabled=true;
+      try{
+        const res=await fetch(N8N_URL,{
+          method:'POST',
+          headers:{'Content-Type':'application/json','X-CLASSROOM-TOKEN':TOKEN},
+          body:JSON.stringify({message:text})
+        });
+        const data=await res.json();
+        add('bot',data.reply||'Không có phản hồi.');
+      }catch(e){
+        add('bot','⚠️ Lỗi kết nối n8n.');
+      }finally{send.disabled=false;}
+    }
+
+    send.onclick=sendMsg;
+    msg.addEventListener('keydown',e=>{if(e.key==='Enter')sendMsg();});
+    add('bot','Xin chào 👋! Tôi có thể giúp gì cho bạn?');
+  </script>
+</body>
+</html>
