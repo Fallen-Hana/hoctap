@@ -19,8 +19,8 @@
   <!-- ================= CONFIG ================= -->
   <script>
     // 👉 Điền các thông số của bạn
-    const SUPABASE_URL = "https://YOUR-PROJECT.supabase.co"; // ví dụ: https://abcd.supabase.co
-    const SUPABASE_ANON = "YOUR_ANON_KEY"; // Anon key (public) từ Supabase
+    const SUPABASE_URL  = "https://YOUR-PROJECT.supabase.co"; // ví dụ: https://abcd.supabase.co
+    const SUPABASE_ANON = "YOUR_ANON_KEY";                     // Anon key (public) từ Supabase
     const N8N_WEBHOOK_URL = "https://your-n8n-domain.com/webhook/class-chat"; // webhook n8n để chat
 
     // Tên lớp & logo (tuỳ chỉnh giao diện)
@@ -30,7 +30,7 @@
 
   <!-- ================ AUTH SCREEN (first) ================= -->
   <section id="auth-screen" class="min-h-screen grid place-items-center px-4">
-    <div class="glass card w-full max-w-3xl p-6">
+    <div class="glass card w-full max-w-xl p-6">
       <div class="flex items-center justify-between mb-6">
         <div class="flex items-center gap-2">
           <div class="w-9 h-9 rounded-lg bg-emerald-400"></div>
@@ -39,40 +39,25 @@
         <span class="text-sm text-slate-300">Chỉ dành cho học sinh trong lớp</span>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <!-- LOGIN by code -->
-        <div class="glass p-5 rounded-xl">
-          <h2 class="text-lg font-semibold mb-2">Đăng nhập bằng mã học sinh</h2>
-          <p class="text-slate-300 text-sm mb-4">Mỗi bạn có một <b>mã đăng nhập</b> (ví dụ: STU01). Nhập đúng mã để vào lớp.</p>
-          <label class="block text-sm mb-1">Mã học sinh</label>
-          <input id="login-code" class="w-full rounded-lg bg-slate-900/50 border border-slate-700 px-3 py-2 mb-3 focus:outline-none focus:ring-2 focus:ring-emerald-400" placeholder="VD: STU01" />
-          <button id="btn-login-code" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg px-3 py-2">Vào lớp</button>
-          <p id="login-code-msg" class="mt-2 text-sm text-rose-400"></p>
-          <hr class="my-4 border-slate-700">
-          <p class="text-xs text-slate-400">* Dữ liệu đăng nhập sẽ lưu cục bộ trên trình duyệt; có thể <b>Đăng xuất</b> để đổi tài khoản.</p>
-        </div>
-
-        <!-- REGISTER (GV tạo nhanh học sinh) -->
-        <div class="glass p-5 rounded-xl">
-          <h2 class="text-lg font-semibold mb-2">Đăng ký nhanh (dành cho học sinh mới)</h2>
-          <div class="grid grid-cols-2 gap-3">
-            <div class="col-span-2">
-              <label class="block text-sm mb-1">Họ và tên</label>
-              <input id="reg-name" class="w-full rounded-lg bg-slate-900/50 border border-slate-700 px-3 py-2" placeholder="Nguyễn Văn A" />
-            </div>
-            <div>
-              <label class="block text-sm mb-1">Mã học sinh</label>
-              <input id="reg-code" class="w-full rounded-lg bg-slate-900/50 border border-slate-700 px-3 py-2" placeholder="STU15" />
-            </div>
-            <div>
-              <label class="block text-sm mb-1">Lớp</label>
-              <input id="reg-class" class="w-full rounded-lg bg-slate-900/50 border border-slate-700 px-3 py-2" placeholder="8A" />
-            </div>
-          </div>
-          <button id="btn-register" class="mt-3 w-full bg-sky-500 hover:bg-sky-600 text-white rounded-lg px-3 py-2">Tạo tài khoản</button>
-          <p id="reg-msg" class="mt-2 text-sm"></p>
-          <p class="text-xs text-slate-400 mt-3">* Giáo viên có thể tiền tạo danh sách 30 bạn trên Supabase; phần đăng ký này chỉ dùng khi cần bổ sung.</p>
-        </div>
+      <!-- LOGIN by code ONLY -->
+      <div class="glass p-5 rounded-xl">
+        <h2 class="text-lg font-semibold mb-2">Đăng nhập bằng mã học sinh</h2>
+        <p class="text-slate-300 text-sm mb-4">
+          Mỗi bạn có một <b>mã đăng nhập</b> (ví dụ: STU01). Nhập đúng mã để vào lớp.
+        </p>
+        <label class="block text-sm mb-1">Mã học sinh</label>
+        <input id="login-code"
+               class="w-full rounded-lg bg-slate-900/50 border border-slate-700 px-3 py-2 mb-3 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+               placeholder="VD: STU01" />
+        <button id="btn-login-code"
+                class="w-full bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg px-3 py-2">
+          Vào lớp
+        </button>
+        <p id="login-code-msg" class="mt-2 text-sm text-rose-400"></p>
+        <hr class="my-4 border-slate-700">
+        <p class="text-xs text-slate-400">
+          * Dữ liệu đăng nhập lưu cục bộ trên trình duyệt; dùng <b>Đăng xuất</b> để đổi tài khoản.
+        </p>
       </div>
     </div>
   </section>
@@ -94,7 +79,6 @@
     </header>
 
     <main class="mx-auto max-w-6xl p-4 grid md:grid-cols-3 gap-4">
-      <!-- Left: shortcuts / stats -->
       <aside class="glass card p-4 md:col-span-1">
         <h3 class="font-semibold mb-3">Tổng quan</h3>
         <ul class="text-sm text-slate-300 list-disc ml-5 space-y-1">
@@ -121,7 +105,7 @@
       </section>
     </main>
 
-    <!-- Scores modal (basic) -->
+    <!-- Scores modal -->
     <div id="scores-modal" class="hidden fixed inset-0 bg-black/60 grid place-items-center p-4">
       <div class="glass card max-w-2xl w-full p-5">
         <div class="flex items-center justify-between mb-3">
@@ -146,27 +130,25 @@
   <!-- ================ APP LOGIC ================= -->
   <script>
     const $ = (q)=>document.querySelector(q);
-    const $$ = (q)=>document.querySelectorAll(q);
 
     // Inject brand/class name
-    document.body.innerHTML = document.body.innerHTML.replaceAll("{{BRAND}}", BRAND_TEXT).replaceAll("{{CLASS_NAME}}", CLASS_NAME);
+    document.body.innerHTML = document.body.innerHTML
+      .replaceAll("{{BRAND}}", BRAND_TEXT)
+      .replaceAll("{{CLASS_NAME}}", CLASS_NAME);
 
     // Supabase client
     const supabase = supabasejs.createClient(SUPABASE_URL, SUPABASE_ANON);
 
     // Helpers
-    const state = {
-      student: null,
-    };
-    function saveSession(s){ localStorage.setItem('student', JSON.stringify(s)); }
-    function loadSession(){ try{ return JSON.parse(localStorage.getItem('student')||'null'); }catch(e){return null;} }
-    function clearSession(){ localStorage.removeItem('student'); }
+    const state = { student: null };
+    const saveSession = (s)=>localStorage.setItem('student', JSON.stringify(s));
+    const loadSession = ()=>{ try{return JSON.parse(localStorage.getItem('student')||'null');}catch(e){return null;} };
+    const clearSession = ()=>localStorage.removeItem('student');
 
     function show(section){
       $('#auth-screen').classList.toggle('hidden', section!=='auth');
       $('#app-screen').classList.toggle('hidden', section!=='app');
     }
-
     function setStudentUI(){
       $('#student-name').textContent = state.student?.name || '';
       $('#student-code').textContent = state.student?.login_code || '';
@@ -177,31 +159,25 @@
       const code = $('#login-code').value.trim();
       const msg = $('#login-code-msg'); msg.textContent='';
       if(!code){ msg.textContent='Nhập mã học sinh.'; return; }
-      // Tìm trong bảng students theo login_code
-      const { data, error } = await supabase.from('students').select('*').eq('login_code', code).limit(1).maybeSingle();
+
+      const { data, error } = await supabase
+        .from('students').select('*')
+        .eq('login_code', code).limit(1).maybeSingle();
+
       if(error){ msg.textContent='Lỗi kết nối CSDL.'; return; }
       if(!data){ msg.textContent='Mã không đúng.'; return; }
+
       state.student = data; saveSession(data);
       setStudentUI(); show('app');
-    }
-
-    // ---------- AUTH: register quick ----------
-    async function registerQuick(){
-      const name = $('#reg-name').value.trim();
-      const code = $('#reg-code').value.trim();
-      const clazz = $('#reg-class').value.trim();
-      const msg = $('#reg-msg'); msg.textContent=''; msg.className='mt-2 text-sm';
-      if(!name||!code){ msg.textContent='Nhập đủ Họ tên và Mã học sinh'; msg.classList.add('text-rose-400'); return; }
-      const { data, error } = await supabase.from('students').insert({ name, login_code: code, class: clazz }).select('*').single();
-      if(error){ msg.textContent = 'Không tạo được (mã trùng?)'; msg.classList.add('text-rose-400'); return; }
-      msg.textContent='Đăng ký xong. Quay lại Đăng nhập bằng mã vừa tạo.'; msg.classList.add('text-emerald-300');
     }
 
     // ---------- CHAT ----------
     function addBubble(role, text){
       const el = document.createElement('div');
       el.className = `bubble ${role==='user'?'bg-emerald-600/90':'bg-slate-800'} text-slate-100`;
-      el.textContent = text; $('#chat-log').appendChild(el); $('#chat-log').scrollTop = $('#chat-log').scrollHeight;
+      el.textContent = text;
+      $('#chat-log').appendChild(el);
+      $('#chat-log').scrollTop = $('#chat-log').scrollHeight;
     }
 
     async function sendChat(){
@@ -212,27 +188,34 @@
         const res = await fetch(N8N_WEBHOOK_URL, {
           method:'POST',
           headers:{ 'Content-Type':'application/json' },
-          body: JSON.stringify({ student_id: state.student.id, login_code: state.student.login_code, name: state.student.name, message: text })
+          body: JSON.stringify({
+            student_id: state.student.id,
+            login_code: state.student.login_code,
+            name: state.student.name,
+            message: text
+          })
         });
-        if(!res.ok){ throw new Error('HTTP '+res.status); }
+        if(!res.ok) throw new Error('HTTP '+res.status);
         const data = await res.json();
         addBubble('assistant', data.reply || 'Không có phản hồi.');
       }catch(e){
         addBubble('assistant', '⚠️ Không kết nối được máy chủ.');
-      }finally{ $('#chat-status').textContent='Đang sẵn sàng'; }
+      }finally{
+        $('#chat-status').textContent='Đang sẵn sàng';
+      }
     }
 
     // ---------- SCORES ----------
     async function openScores(){
-      $('#scores-modal').classList.remove('hidden');
-      const tbody = $('#scores-table tbody'); tbody.innerHTML = '';
+      document.getElementById('scores-modal').classList.remove('hidden');
+      const tbody = document.querySelector('#scores-table tbody'); tbody.innerHTML = '';
       const { data, error } = await supabase
         .from('scores')
         .select('subject, test_id, score, updated_at')
         .eq('student_id', state.student.id)
         .order('updated_at', { ascending:false });
       if(error){ tbody.innerHTML = `<tr><td colspan=4 class="py-3 text-rose-400">Không tải được bảng điểm.</td></tr>`; return; }
-      if(!data || data.length===0){ tbody.innerHTML = `<tr><td colspan=4 class="py-3 text-slate-300">Chưa có điểm.</td></tr>`; return; }
+      if(!data?.length){ tbody.innerHTML = `<tr><td colspan=4 class="py-3 text-slate-300">Chưa có điểm.</td></tr>`; return; }
       for(const r of data){
         const tr = document.createElement('tr'); tr.className='text-slate-200';
         tr.innerHTML = `<td class="py-2">${r.subject||''}</td><td>${r.test_id||''}</td><td>${r.score??''}</td><td>${new Date(r.updated_at).toLocaleString('vi-VN')}</td>`;
@@ -241,13 +224,12 @@
     }
 
     // ---------- EVENTS ----------
-    $('#btn-login-code').addEventListener('click', loginByCode);
-    $('#btn-register').addEventListener('click', registerQuick);
-    $('#btn-logout').addEventListener('click', ()=>{ clearSession(); location.reload(); });
-    $('#chat-send').addEventListener('click', sendChat);
-    $('#chat-input').addEventListener('keydown', e=>{ if(e.key==='Enter') sendChat(); });
-    $('#btn-view-scores').addEventListener('click', openScores);
-    $('#scores-close').addEventListener('click', ()=>$('#scores-modal').classList.add('hidden'));
+    document.getElementById('btn-login-code').addEventListener('click', loginByCode);
+    document.getElementById('btn-logout').addEventListener('click', ()=>{ clearSession(); location.reload(); });
+    document.getElementById('chat-send').addEventListener('click', sendChat);
+    document.getElementById('chat-input').addEventListener('keydown', e=>{ if(e.key==='Enter') sendChat(); });
+    document.getElementById('btn-view-scores').addEventListener('click', openScores);
+    document.getElementById('scores-close').addEventListener('click', ()=>document.getElementById('scores-modal').classList.add('hidden'));
 
     // ---------- INIT ----------
     (function init(){
@@ -258,4 +240,3 @@
   </script>
 </body>
 </html>
-
