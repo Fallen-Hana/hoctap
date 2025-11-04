@@ -224,7 +224,13 @@
     }
 
     // ---------- EVENTS ----------
-    document.getElementById('btn-login-code').addEventListener('click', loginByCode);
+    document.getElementById('btn-login-code').addEventListener('click', () => {
+  console.log('Click Vào lớp');   // nhìn trong Console để biết có chạy
+  loginByCode().catch(err => {
+    console.error(err);
+    document.getElementById('login-code-msg').textContent = 'Lỗi script.';
+  });
+});
     document.getElementById('btn-logout').addEventListener('click', ()=>{ clearSession(); location.reload(); });
     document.getElementById('chat-send').addEventListener('click', sendChat);
     document.getElementById('chat-input').addEventListener('keydown', e=>{ if(e.key==='Enter') sendChat(); });
@@ -240,4 +246,5 @@
   </script>
 </body>
 </html>
+
 
