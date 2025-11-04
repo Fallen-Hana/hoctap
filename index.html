@@ -2,249 +2,73 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Cổng học tập lớp • Đăng nhập trước</title>
-  <!-- Tailwind via CDN -->
+  <title>8A2 Trần Phú • Đăng nhập lớp học</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Supabase JS v2 via CDN -->
   <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-  <style>
-    body{background:#0f172a}
-    .glass{background:rgba(255,255,255,.06);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.12)}
-    .card{border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.35)}
-    .bubble{border-radius:14px;padding:10px 12px;max-width:80%;white-space:pre-wrap;word-break:break-word}
-  </style>
-</head>
-<body class="text-slate-100">
-  <!-- ================= CONFIG ================= -->
   <script>
-    // 👉 Điền các thông số của bạn
-    const SUPABASE_URL  = "https://hvokijjacpvorkszddqf.supabase.co"; // ví dụ: https://abcd.supabase.co
-    const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2b2txamphY3B2b3Jrc3pkZHFmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIxNjI5ODUsImV4cCI6MjA3NzczODk4NX0.P9BcwbKCIwya03BOQbGcLbdGQ6UKEL5o_sIE6qeQS7A";                     // Anon key (public) từ Supabase
-    const N8N_WEBHOOK_URL = "https://your-n8n-domain.com/webhook/class-chat"; // webhook n8n để chat
-
-    // Tên lớp & logo (tuỳ chỉnh giao diện)
-    const CLASS_NAME = "Lớp 8A - Cổng học tập";
-    const BRAND_TEXT = "8A2 Trần Phú";
+    const supabase = supabase.createClient(
+      "https://YOUR_PROJECT.supabase.co",
+      "YOUR_PUBLIC_ANON_KEY"
+    );
   </script>
+</head>
 
-  <!-- ================ AUTH SCREEN (first) ================= -->
-  <section id="auth-screen" class="min-h-screen grid place-items-center px-4">
-    <div class="glass card w-full max-w-xl p-6">
-      <div class="flex items-center justify-between mb-6">
-        <div class="flex items-center gap-2">
-          <div class="w-9 h-9 rounded-lg bg-emerald-400"></div>
-          <h1 class="text-xl font-semibold">{{BRAND}}</h1>
-        </div>
-        <span class="text-sm text-slate-300">Chỉ dành cho học sinh trong lớp</span>
-      </div>
-
-      <!-- LOGIN by code ONLY -->
-      <div class="glass p-5 rounded-xl">
-        <h2 class="text-lg font-semibold mb-2">Đăng nhập bằng mã học sinh</h2>
-        <p class="text-slate-300 text-sm mb-4">
-          Mỗi bạn có một <b>mã đăng nhập</b> (ví dụ: STU01). Nhập đúng mã để vào lớp.
-        </p>
-        <label class="block text-sm mb-1">Mã học sinh</label>
-        <input id="login-code"
-               class="w-full rounded-lg bg-slate-900/50 border border-slate-700 px-3 py-2 mb-3 focus:outline-none focus:ring-2 focus:ring-emerald-400"
-               placeholder="VD: STU01" />
-        <button id="btn-login-code"
-                class="w-full bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg px-3 py-2">
-          Vào lớp
-        </button>
-        <p id="login-code-msg" class="mt-2 text-sm text-rose-400"></p>
-        <hr class="my-4 border-slate-700">
-        <p class="text-xs text-slate-400">
-          * Dữ liệu đăng nhập lưu cục bộ trên trình duyệt; dùng <b>Đăng xuất</b> để đổi tài khoản.
-        </p>
-      </div>
+<body class="bg-[#0d1117] flex justify-center items-center h-screen text-white">
+  <div class="bg-[#161b22] border border-gray-700 rounded-xl shadow-xl w-[380px] p-6">
+    <div class="flex items-center mb-5">
+      <div class="w-4 h-4 rounded-sm bg-green-400 mr-2"></div>
+      <h1 class="text-lg font-semibold">8A2 Trần Phú</h1>
     </div>
-  </section>
 
-  <!-- ================ APP SCREEN (after login) ================= -->
-  <section id="app-screen" class="hidden min-h-screen">
-    <header class="glass card mx-auto max-w-6xl mt-6 p-4 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <div class="w-8 h-8 rounded bg-emerald-400"></div>
-        <div>
-          <h2 class="font-semibold">{{CLASS_NAME}}</h2>
-          <p class="text-xs text-slate-300">Xin chào, <span id="student-name" class="font-medium text-slate-100"></span> • Mã: <span id="student-code" class="text-slate-300"></span></p>
-        </div>
-      </div>
-      <div class="flex items-center gap-2">
-        <button id="btn-view-scores" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-600 text-sm">Bảng điểm</button>
-        <button id="btn-logout" class="px-3 py-1.5 rounded-lg bg-rose-500 hover:bg-rose-600 text-white text-sm">Đăng xuất</button>
-      </div>
-    </header>
+    <p class="text-sm text-gray-400 mb-5">Chỉ dành cho học sinh trong lớp</p>
 
-    <main class="mx-auto max-w-6xl p-4 grid md:grid-cols-3 gap-4">
-      <aside class="glass card p-4 md:col-span-1">
-        <h3 class="font-semibold mb-3">Tổng quan</h3>
-        <ul class="text-sm text-slate-300 list-disc ml-5 space-y-1">
-          <li>Chat AI để hỏi bài</li>
-          <li>Làm bài trắc nghiệm (đang cập nhật)</li>
-          <li>Điểm & lịch sử học sẽ lưu ở CSDL</li>
-        </ul>
-        <div class="mt-4 text-xs text-slate-400">Dữ liệu được lưu trên Supabase; chỉ bạn và giáo viên xem được điểm của bạn.</div>
-      </aside>
-
-      <!-- Right: Chat panel -->
-      <section class="glass card p-0 md:col-span-2 flex flex-col">
-        <div class="px-4 py-3 border-b border-slate-700 flex items-center justify-between">
-          <h3 class="font-semibold">Chat AI • Hỗ trợ học tập</h3>
-          <span id="chat-status" class="text-xs text-emerald-300">Đang sẵn sàng</span>
-        </div>
-        <div id="chat-log" class="flex-1 overflow-y-auto p-4 space-y-2">
-          <div class="bubble bg-slate-800 text-slate-100">Xin chào! Hãy đặt câu hỏi. Ví dụ: "Giải phương trình bậc hai?"</div>
-        </div>
-        <div class="p-3 border-t border-slate-700 flex gap-2">
-          <input id="chat-input" class="flex-1 rounded-lg bg-slate-900/60 border border-slate-700 px-3 py-2 outline-none focus:ring-2 focus:ring-emerald-400" placeholder="Nhập câu hỏi..." />
-          <button id="chat-send" class="px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white">Gửi</button>
-        </div>
-      </section>
-    </main>
-
-    <!-- Scores modal -->
-    <div id="scores-modal" class="hidden fixed inset-0 bg-black/60 grid place-items-center p-4">
-      <div class="glass card max-w-2xl w-full p-5">
-        <div class="flex items-center justify-between mb-3">
-          <h3 class="font-semibold">Bảng điểm của bạn</h3>
-          <button id="scores-close" class="text-sm px-2 py-1 rounded bg-slate-800">Đóng</button>
-        </div>
-        <table id="scores-table" class="w-full text-sm">
-          <thead>
-            <tr class="text-left text-slate-300">
-              <th class="py-2">Môn</th>
-              <th class="py-2">Bài / Mã</th>
-              <th class="py-2">Điểm</th>
-              <th class="py-2">Cập nhật</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-slate-700"></tbody>
-        </table>
-      </div>
+    <div class="mb-5">
+      <label class="text-gray-300 text-sm block mb-2 font-medium">Mã học sinh</label>
+      <input id="login_code" type="text" placeholder="VD: A2-14"
+        class="w-full p-2 rounded-md bg-[#0d1117] border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-green-500">
     </div>
-  </section>
 
-  <!-- ================ APP LOGIC ================= -->
+    <button id="btnLogin"
+      class="w-full py-2 bg-green-500 hover:bg-green-600 rounded-md font-medium text-black transition">
+      Vào lớp
+    </button>
+
+    <p id="message" class="text-center text-sm text-red-400 mt-3 h-5"></p>
+
+    <p class="text-gray-500 text-xs text-center mt-5">
+      * Dữ liệu đăng nhập lưu cục bộ trên trình duyệt.<br>
+      Dùng <span class="text-gray-300">Đăng xuất</span> để đổi tài khoản.
+    </p>
+  </div>
+
   <script>
-    const $ = (q)=>document.querySelector(q);
+    document.getElementById('btnLogin').addEventListener('click', async () => {
+      const code = document.getElementById('login_code').value.trim();
+      const msg = document.getElementById('message');
+      msg.textContent = "";
 
-    // Inject brand/class name
-    document.body.innerHTML = document.body.innerHTML
-      .replaceAll("{{BRAND}}", BRAND_TEXT)
-      .replaceAll("{{CLASS_NAME}}", CLASS_NAME);
-
-    // Supabase client
-    const supabase = supabasejs.createClient(SUPABASE_URL, SUPABASE_ANON);
-
-    // Helpers
-    const state = { student: null };
-    const saveSession = (s)=>localStorage.setItem('student', JSON.stringify(s));
-    const loadSession = ()=>{ try{return JSON.parse(localStorage.getItem('student')||'null');}catch(e){return null;} };
-    const clearSession = ()=>localStorage.removeItem('student');
-
-    function show(section){
-      $('#auth-screen').classList.toggle('hidden', section!=='auth');
-      $('#app-screen').classList.toggle('hidden', section!=='app');
-    }
-    function setStudentUI(){
-      $('#student-name').textContent = state.student?.name || '';
-      $('#student-code').textContent = state.student?.login_code || '';
-    }
-
-    // ---------- AUTH: login by code ----------
-    async function loginByCode(){
-      const code = $('#login-code').value.trim();
-      const msg = $('#login-code-msg'); msg.textContent='';
-      if(!code){ msg.textContent='Nhập mã học sinh.'; return; }
+      if (!code) {
+        msg.textContent = "⚠️ Vui lòng nhập mã học sinh.";
+        return;
+      }
 
       const { data, error } = await supabase
-        .from('students').select('*')
-        .eq('login_code', code).limit(1).maybeSingle();
+        .from('students')
+        .select('*')
+        .eq('login_code', code)
+        .maybeSingle();
 
-      if(error){ msg.textContent='Lỗi kết nối CSDL.'; return; }
-      if(!data){ msg.textContent='Mã không đúng.'; return; }
-
-      state.student = data; saveSession(data);
-      setStudentUI(); show('app');
-    }
-
-    // ---------- CHAT ----------
-    function addBubble(role, text){
-      const el = document.createElement('div');
-      el.className = `bubble ${role==='user'?'bg-emerald-600/90':'bg-slate-800'} text-slate-100`;
-      el.textContent = text;
-      $('#chat-log').appendChild(el);
-      $('#chat-log').scrollTop = $('#chat-log').scrollHeight;
-    }
-
-    async function sendChat(){
-      const inp = $('#chat-input'); const text = inp.value.trim(); if(!text) return; inp.value='';
-      addBubble('user', text);
-      $('#chat-status').textContent = 'Đang gửi...';
-      try{
-        const res = await fetch(N8N_WEBHOOK_URL, {
-          method:'POST',
-          headers:{ 'Content-Type':'application/json' },
-          body: JSON.stringify({
-            student_id: state.student.id,
-            login_code: state.student.login_code,
-            name: state.student.name,
-            message: text
-          })
-        });
-        if(!res.ok) throw new Error('HTTP '+res.status);
-        const data = await res.json();
-        addBubble('assistant', data.reply || 'Không có phản hồi.');
-      }catch(e){
-        addBubble('assistant', '⚠️ Không kết nối được máy chủ.');
-      }finally{
-        $('#chat-status').textContent='Đang sẵn sàng';
+      if (error || !data) {
+        msg.textContent = "❌ Mã học sinh không đúng. Kiểm tra lại nhé.";
+        return;
       }
-    }
 
-    // ---------- SCORES ----------
-    async function openScores(){
-      document.getElementById('scores-modal').classList.remove('hidden');
-      const tbody = document.querySelector('#scores-table tbody'); tbody.innerHTML = '';
-      const { data, error } = await supabase
-        .from('scores')
-        .select('subject, test_id, score, updated_at')
-        .eq('student_id', state.student.id)
-        .order('updated_at', { ascending:false });
-      if(error){ tbody.innerHTML = `<tr><td colspan=4 class="py-3 text-rose-400">Không tải được bảng điểm.</td></tr>`; return; }
-      if(!data?.length){ tbody.innerHTML = `<tr><td colspan=4 class="py-3 text-slate-300">Chưa có điểm.</td></tr>`; return; }
-      for(const r of data){
-        const tr = document.createElement('tr'); tr.className='text-slate-200';
-        tr.innerHTML = `<td class="py-2">${r.subject||''}</td><td>${r.test_id||''}</td><td>${r.score??''}</td><td>${new Date(r.updated_at).toLocaleString('vi-VN')}</td>`;
-        tbody.appendChild(tr);
-      }
-    }
+      // lưu thông tin vào localStorage
+      localStorage.setItem('student', JSON.stringify(data));
 
-    // ---------- EVENTS ----------
-    document.getElementById('btn-login-code').addEventListener('click', () => {
-  console.log('Click Vào lớp');   // nhìn trong Console để biết có chạy
-  loginByCode().catch(err => {
-    console.error(err);
-    document.getElementById('login-code-msg').textContent = 'Lỗi script.';
-  });
-});
-    document.getElementById('btn-logout').addEventListener('click', ()=>{ clearSession(); location.reload(); });
-    document.getElementById('chat-send').addEventListener('click', sendChat);
-    document.getElementById('chat-input').addEventListener('keydown', e=>{ if(e.key==='Enter') sendChat(); });
-    document.getElementById('btn-view-scores').addEventListener('click', openScores);
-    document.getElementById('scores-close').addEventListener('click', ()=>document.getElementById('scores-modal').classList.add('hidden'));
-
-    // ---------- INIT ----------
-    (function init(){
-      const s = loadSession();
-      if(s && s.id){ state.student = s; setStudentUI(); show('app'); }
-      else { show('auth'); }
-    })();
+      // chuyển sang trang chat
+      window.location.href = "chat.html";
+    });
   </script>
 </body>
 </html>
-
-
