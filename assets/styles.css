@@ -1,0 +1,80 @@
+body { background:#0d1117 }
+.panel { background:#161b22; border:1px solid #30363d; border-radius:14px }
+
+/* BONG BÓNG: ôm nội dung, không kéo full chiều ngang */
+.msg {
+  display:inline-block;                 /* ôm theo nội dung */
+  max-width:75%;                        /* giống Messenger */
+  width:fit-content;                    /* hiện đại */
+  width:-webkit-fit-content;            /* fallback WebKit */
+  width:-moz-fit-content;               /* fallback Firefox cũ */
+  padding:.6rem .8rem;
+  border-radius:18px;                   /* bo mềm kiểu Messenger */
+  margin:.25rem 0;                      /* dày tin hơn chút */
+  word-wrap:break-word; white-space:pre-wrap;
+  clear:both;                           /* mỗi bong bóng xuống dòng riêng khi float */
+  box-shadow:0 1px 1px rgba(0,0,0,.08);
+}
+
+/* BÊN PHẢI (mình): đẩy sang phải nhưng KHÔNG kéo giãn chiều ngang */
+.u {
+  background:#0084FF; color:#fff;
+  /* bỏ cơ chế auto làm giãn full hàng */
+  margin-left:0;
+  float:right;                           /* canh phải gọn như Messenger */
+  border-top-right-radius:6px;           /* góc “nhọn” đặc trưng */
+}
+
+/* BÊN TRÁI (đối phương/bot): canh trái gọn */
+.a {
+  background:#2d333b; color:#e5e7eb;
+  margin-right:0;
+  float:left;                            /* canh trái */
+  border-top-left-radius:6px;
+}
+
+.disabled { opacity:.6; pointer-events:none }
+.typing { display:inline-flex; gap:6px; align-items:center }
+.dot { width:6px; height:6px; border-radius:50%; background:#9ca3af; animation:bounce 1.2s infinite }
+.dot:nth-child(2){ animation-delay:.2s } .dot:nth-child(3){ animation-delay:.4s }
+@keyframes bounce { 0%,80%,100%{ transform:translateY(0) } 40%{ transform:translateY(-4px) } }
+
+#toast { position:fixed; right:16px; bottom:16px; z-index:1000; display:none }
+.toast-item { background:#111827; color:#fff; border:1px solid #374151; padding:10px 12px; border-radius:10px; box-shadow:0 6px 24px rgba(0,0,0,.35); margin-top:8px; font-size:.9rem }
+.toast-item.error { background:#7f1d1d; border-color:#b91c1c }
+
+.badge { font-size:11px; padding:2px 6px; border:1px solid #10b98166; border-radius:999px; color:#34d399; background:#10b9810d; margin-left:8px }
+.row-btn { opacity:.75 } .row-btn:hover{ opacity:1 }
+
+/* ẢNH trong bong bóng: ôm vừa khung, không kéo giãn bong bóng */
+.img-chat {
+  max-width:260px; max-height:360px;
+  border-radius:12px; border:1px solid #374151;
+  display:block; margin-top:.35rem; cursor:pointer;
+}
+
+.attach-bar { background:#0f172a80; border:1px solid #374151; border-radius:12px; padding:8px; margin:6px 12px 0 12px }
+.attach-thumb { width:64px; height:64px; object-fit:cover; border-radius:8px; border:1px solid #374151 }
+.btn { padding:6px 10px; border-radius:8px; border:1px solid #4b5563 }
+.btn:hover { background:#374151 }
+.btn-primary { background:#10b981; color:#111827; border:0 }
+.btn-primary:hover { background:#0ea572 }
+.card { background:#161b22; border:1px solid #30363d; border-radius:14px }
+.hint { color:#8b949e }
+/* Nếu tin nhắn có ảnh thì bỏ nền và viền của bong bóng */
+.msg:has(.img-chat) {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  padding: 0 !important;
+}
+
+/* Ảnh vẫn hiển thị đẹp */
+.img-chat {
+  display: block;
+  max-width: 260px;
+  max-height: 360px;
+  border-radius: 10px;
+  border: 0;                /* bỏ viền */
+  margin: 4px 0;
+}

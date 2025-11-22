@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Phòng Chat Học Tập</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/@supabase/supabase-js@2" defer></script>
+  <link rel="stylesheet" href="./assets/styles.css" />
+</head>
+<body class="h-screen text-white">
+  <div class="h-full grid grid-cols-12 gap-3 p-3">
+    <!-- Sidebar -->
+    <aside class="col-span-3 panel p-3 flex flex-col sticky top-3 self-start max-h-[calc(100vh-24px)]">
+      <div class="flex items-center mb-2">
+        <div class="w-3.5 h-3.5 rounded-sm bg-emerald-400 mr-2"></div>
+        <h2 class="font-semibold">
+          Các cuộc trò chuyện <span id="mockBadge" class="hidden badge">MOCK</span>
+        </h2>
+      </div>
+      <div id="studentInfo" class="text-sm text-gray-300 mb-3"></div>
+      <button id="btnNew" class="mb-3 py-2 rounded bg-emerald-500 text-black hover:bg-emerald-600">
+        + Cuộc trò chuyện mới
+      </button>
+      <div id="convList" class="overflow-y-auto grow text-sm"></div>
+    </aside>
+
+    <!-- Chat -->
+    <main class="col-span-9 panel flex flex-col overflow-hidden">
+      <header class="p-3 border-b border-gray-700 flex items-center sticky top-0 z-10 bg-[#161b22]">
+        <h1 id="chatTitle" class="font-semibold grow">Phòng Chat Học Tập</h1>
+        <button id="btnLogout" class="text-xs px-2 py-1 border border-gray-600 rounded hover:bg-gray-700">
+          Đăng xuất
+        </button>
+      </header>
+
+      <div id="chatBox" class="flex-1 overflow-y-auto p-3"></div>
+
+      <!-- Thanh xem trước ảnh -->
+      <div id="attachBar" class="attach-bar hidden">
+        <div class="flex items-center gap-3">
+          <img id="attachImg" class="attach-thumb" alt="preview" />
+          <div class="text-xs grow">
+            <div id="attachName" class="font-medium"></div>
+            <div id="attachSize" class="text-gray-400"></div>
+          </div>
+          <button id="btnRemoveAttach" class="btn">Hủy</button>
+          <button id="btnSendAttach" class="btn btn-primary">Gửi ảnh</button>
+        </div>
+      </div>
+
+      <div class="p-3 border-t border-gray-700 flex gap-2 items-center sticky bottom-0 bg-[#0d1117] z-10">
+        <label class="cursor-pointer">
+          <input type="file" id="imgInput" accept="image/*" class="hidden" />
+          <span class="px-3 py-2 rounded bg-gray-700 hover:bg-gray-600 text-xs">📷 Ảnh</span>
+        </label>
+
+        <input id="txt" class="flex-1 p-2 rounded bg-[#0d1117] border border-gray-600 outline-none focus:ring-2 focus:ring-emerald-500"
+               placeholder="Nhập nội dung, có thể kèm ảnh xem trước..." />
+        <button id="btnSend" class="px-4 py-2 rounded bg-emerald-500 text-black hover:bg-emerald-600">Gửi</button>
+      </div>
+      <p id="msg" class="h-5 px-3 text-sm text-red-400"></p>
+    </main>
+  </div>
+
+  <div id="toast"></div>
+
+  <!-- Modal đặt tên -->
+  <div id="newConvModal" class="fixed inset-0 hidden items-center justify-center z-50">
+    <div class="absolute inset-0" style="background:rgba(0,0,0,.5)"></div>
+    <div class="relative panel p-5 w-[380px]">
+      <h3 class="text-base font-semibold mb-3">Đặt tên cuộc trò chuyện</h3>
+      <input id="convTitleInput" type="text"
+             class="w-full p-2 rounded bg-[#0d1117] border border-gray-600 outline-none focus:ring-2 focus:ring-emerald-500"
+             placeholder="VD: Ôn tập Phân Số, Bài Hình tam giác..." />
+      <p id="convTitleErr" class="text-xs text-red-400 h-5 mt-1"></p>
+      <div class="mt-4 flex justify-end gap-2">
+        <button id="btnCancelNew" class="px-3 py-1 rounded border border-gray-600 hover:bg-gray-700">Hủy</button>
+        <button id="btnCreateNew" class="px-3 py-1 rounded bg-emerald-500 text-black hover:bg-emerald-600">Tạo</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- App entry -->
+  <script type="module" src="./scripts/pages/main-chat.js"></script>
+</body>
+</html>
