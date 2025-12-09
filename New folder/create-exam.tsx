@@ -416,7 +416,7 @@ if (!convertResult.success) {
 // nên KHÔNG yêu cầu backend trả lại nữa.
 // Chỉ cần cập nhật tổng số câu hỏi (nếu muốn):
 // Hiển thị toast / alert thành công
-alert('Đã cập nhật câu hỏi từ file lên Google Sheet hiện tại.');
+console.log('Đã cập nhật câu hỏi từ file lên Google Sheet hiện tại.');
       
 
       if (!convertResult.success) {
